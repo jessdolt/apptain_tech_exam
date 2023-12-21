@@ -1,26 +1,19 @@
 import { User } from "@/app/interfaces"
-import { API_TOKEN, APP_ID } from "@/lib"
 import prismadb from "@/lib/prismadb"
 import { generateNickName } from "@/utils/generateNickname"
 import { generateId } from "@/utils/generateUuid"
-import axios from "axios"
+import { api } from "./lib/axios"
 
 const createUser = async () => {
   try {
-    const { data } = await axios.post(
-      `https://api-${APP_ID}.sendbird.com/v3/users`,
-      {
-        user_id: generateId(),
-        nickname: generateNickName(),
-        issue_access_token: true,
-        profile_url: "",
-      },
-      {
-        headers: {
-          "Api-token": API_TOKEN,
-        },
-      }
-    )
+    const { data } = await api.post(`/users`, {
+      user_id: generateId(),
+      nickname: generateNickName(),
+      issue_access_token: true,
+      profile_url: "",
+    })
+
+    const token = await api.post(`/users/${data.user_id}/token`, {})
 
     await prismadb.user.create({
       data: {
