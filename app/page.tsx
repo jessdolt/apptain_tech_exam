@@ -1,13 +1,13 @@
 import createUser from "@/actions/createUser"
-import Chat from "./components/chat"
+import SbChat from "./components/sb-chat"
 
 export default async function Home() {
-  // const user = await createUser()
+  const user = await createUser()
 
   return (
     <main className="">
       <div className="h-screen w-screen ">
-        <Chat user={null} />
+        <SbChat user={user} />
       </div>
     </main>
   )

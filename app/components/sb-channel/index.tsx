@@ -4,12 +4,11 @@ import axios from "axios"
 
 import { ChannelList } from "@sendbird/uikit-react"
 import CreateChannel from "@sendbird/uikit-react/CreateChannel"
-import ChannelListHeader from "@sendbird/uikit-react/ChannelList/components/ChannelListHeader"
-import Icon, { IconTypes } from "@sendbird/uikit-react/ui/Icon"
 import EditUserProfile from "@sendbird/uikit-react/EditUserProfile"
+import SbHeader from "./sb-header"
 
-const ChannelCustomize = () => {
-  const [open, setOpen] = useState(false)
+const SbChannel = () => {
+  const [openChannel, setOpenChannel] = useState(false)
   const [openUserProfile, setOpenUserProfile] = useState(false)
 
   const handleOnChannelCreate = async (channel: any) => {
@@ -26,8 +25,7 @@ const ChannelCustomize = () => {
     }
 
     try {
-      const response = await axios.post("/api/channel", data)
-      console.log(response)
+      await axios.post("/api/channel", data)
     } catch (e) {
       console.log(e)
     }
@@ -36,7 +34,7 @@ const ChannelCustomize = () => {
     const { userId, plainProfileUrl, nickname } = user
 
     try {
-      const response = await axios.put("/api/user", {
+      await axios.put("/api/user", {
         user_id: userId,
         profile_url: plainProfileUrl,
         nickname,
@@ -50,11 +48,11 @@ const ChannelCustomize = () => {
 
   return (
     <>
-      {open && (
+      {openChannel && (
         <CreateChannel
           onCreateChannel={handleOnChannelCreate}
-          onCancel={() => setOpen(false)}
-        ></CreateChannel>
+          onCancel={() => setOpenChannel(false)}
+        />
       )}
 
       {openUserProfile && (
@@ -67,27 +65,9 @@ const ChannelCustomize = () => {
       <ChannelList
         renderHeader={() => {
           return (
-            <ChannelListHeader
-              onEdit={() => setOpenUserProfile(true)}
-              renderIconButton={() => (
-                <button
-                  className="sendbird-iconbutton"
-                  style={{
-                    height: 32,
-                    width: 32,
-                  }}
-                  onClick={() => setOpen(true)}
-                >
-                  <span className="sendbird-iconbutton__inner">
-                    <Icon
-                      type={IconTypes.CREATE}
-                      width={24}
-                      height={24}
-                      className="sendbird-icon-color--primary"
-                    />
-                  </span>
-                </button>
-              )}
+            <SbHeader
+              setOpenChannel={setOpenChannel}
+              setOpenUserProfile={setOpenUserProfile}
             />
           )
         }}
@@ -96,4 +76,4 @@ const ChannelCustomize = () => {
   )
 }
 
-export default ChannelCustomize
+export default SbChannel
