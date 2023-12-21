@@ -1,15 +1,7 @@
 "use client"
-import { Channel, ChannelList } from "@sendbird/uikit-react"
-import ChannelListUI from "@sendbird/uikit-react/ChannelList/components/ChannelListUI"
-import {
-  ChannelListProvider,
-  useChannelListContext,
-} from "@sendbird/uikit-react/ChannelList/context"
-import CreateChannel from "@sendbird/uikit-react/CreateChannel"
-import {
-  CreateChannelProvider,
-  useCreateChannelContext,
-} from "@sendbird/uikit-react/CreateChannel/context"
+import { Channel } from "@sendbird/uikit-react"
+import { ChannelListProvider } from "@sendbird/uikit-react/ChannelList/context"
+
 import React, { useState } from "react"
 import ChannelCustomize from "./channel"
 
@@ -25,10 +17,7 @@ const SendBirdCustomize = () => {
             setCurrentChannel(channel)
           }}
         >
-          <ChannelCustomize
-            setCurrentChannel={setCurrentChannel}
-            currentChannelUrl={currentChannelUrl}
-          />
+          <ChannelCustomize />
         </ChannelListProvider>
       </div>
 

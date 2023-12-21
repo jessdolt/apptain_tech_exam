@@ -1,40 +1,74 @@
 "use client"
-import CreateChannel from "@sendbird/uikit-react/CreateChannel"
-import ChannelHeader from "@sendbird/uikit-react/Channel/components/ChannelHeader"
-import ChannelListHeader from "@sendbird/uikit-react/ChannelList/components/ChannelListHeader"
-import ChannelListUI from "@sendbird/uikit-react/ChannelList/components/ChannelListUI"
-import ChannelPreview from "@sendbird/uikit-react/ChannelList/components/ChannelPreview"
-import { useChannelListContext } from "@sendbird/uikit-react/ChannelList/context"
-import { useCreateChannelContext } from "@sendbird/uikit-react/CreateChannel/context"
+import { useState } from "react"
+import axios from "axios"
 
-import React, { useState } from "react"
 import { ChannelList } from "@sendbird/uikit-react"
-import Button, {
-  ButtonSizes,
-  ButtonTypes,
-} from "@sendbird/uikit-react/ui/Button"
+import CreateChannel from "@sendbird/uikit-react/CreateChannel"
+import ChannelListHeader from "@sendbird/uikit-react/ChannelList/components/ChannelListHeader"
 import Icon, { IconTypes } from "@sendbird/uikit-react/ui/Icon"
+import EditUserProfile from "@sendbird/uikit-react/EditUserProfile"
 
-const ChannelCustomize = ({ setCurrentChannel, currentChannelUrl }: any) => {
-  const { allChannels, initialized, loading } = useChannelListContext()
-  const d = useCreateChannelContext()
-  // if (initialized) return <PlaceHolder type="WRONG" />
-  // if (loading) return <PlaceHolder type="LOADING" />
-
+const ChannelCustomize = () => {
   const [open, setOpen] = useState(false)
+  const [openUserProfile, setOpenUserProfile] = useState(false)
+
+  const handleOnChannelCreate = async (channel: any) => {
+    const { creator, url, members } = channel
+    const { userId } = creator
+
+    const data = {
+      created_by: userId,
+      url,
+      chatmate:
+        members.length === 2
+          ? members.filter((member: any) => member.userId !== userId)[0].userId
+          : null,
+    }
+
+    try {
+      const response = await axios.post("/api/channel", data)
+      console.log(response)
+    } catch (e) {
+      console.log(e)
+    }
+  }
+  const handleOnEditProfile = async (user: any) => {
+    const { userId, plainProfileUrl, nickname } = user
+
+    try {
+      const response = await axios.put("/api/user", {
+        user_id: userId,
+        profile_url: plainProfileUrl,
+        nickname,
+      })
+
+      setOpenUserProfile(false)
+    } catch (e) {
+      console.log(e)
+    }
+  }
 
   return (
     <>
       {open && (
         <CreateChannel
-          onCreateChannel={(chnnel) => console.log(chnnel)}
+          onCreateChannel={handleOnChannelCreate}
           onCancel={() => setOpen(false)}
         ></CreateChannel>
       )}
+
+      {openUserProfile && (
+        <EditUserProfile
+          onCancel={() => setOpenUserProfile(false)}
+          onEditProfile={handleOnEditProfile}
+        />
+      )}
+
       <ChannelList
         renderHeader={() => {
           return (
             <ChannelListHeader
+              onEdit={() => setOpenUserProfile(true)}
               renderIconButton={() => (
                 <button
                   className="sendbird-iconbutton"
@@ -54,40 +88,11 @@ const ChannelCustomize = ({ setCurrentChannel, currentChannelUrl }: any) => {
                   </span>
                 </button>
               )}
-            ></ChannelListHeader>
+            />
           )
         }}
       ></ChannelList>
     </>
-
-    // <ChannelList>
-    //   <ChannelListUI></ChannelListUI>
-    //   <ChannelPreview >
-
-    //   </ChannelPreview>
-    // </ChannelList>
-    // <div>
-    //   <ChannelListHeader
-    //     renderIconButton={() => {
-    //       return <Button>e</Button>
-    //     }}
-    //   />
-    //   {allChannels.map((channel, index) => {
-    //     return (
-    //       <ChannelPreview
-    //         channel={channel}
-    //         key={channel.url}
-    //         tabIndex={index + 1}
-    //         renderChannelAction={() => <></>}
-    //         isActive={channel.url === currentChannelUrl}
-    //         onClick={() => {
-    //           console.log("hit")
-    //           setCurrentChannel(channel)
-    //         }}
-    //       ></ChannelPreview>
-    //     )
-    //   })}
-    // </div>
   )
 }
 

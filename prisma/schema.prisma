@@ -8,11 +8,24 @@ datasource db {
 }
 
 model User {
-  id          Int      @id @default(autoincrement())
-  user_id     String   @unique
+  id          Int       @id @default(autoincrement())
+  user_id     String    @unique
   nickname    String
   profile_url String
-  deleted     Boolean  @default(false)
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  deleted     Boolean   @default(false)
+  created_at  DateTime  @default(now())
+  updated_at  DateTime  @updatedAt
+  Channel     Channel[]
+}
+
+model Channel {
+  id                   Int      @id @default(autoincrement())
+  url                  String
+  created_by           String
+  chatmate             String?
+  total_messages_count Int      @default(0)
+  deleted              Boolean  @default(false)
+  created_at           DateTime @default(now())
+  updated_at           DateTime @updatedAt
+  created_by_id        User     @relation(fields: [created_by], references: [user_id])
 }
