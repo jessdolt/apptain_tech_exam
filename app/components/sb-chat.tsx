@@ -4,6 +4,7 @@ import { ACCESSS_TOKEN, APP_ID, USER_ID } from "@/lib"
 import { User } from "../interfaces"
 import { SendBirdProvider } from "@sendbird/uikit-react"
 import SbAppCustomize from "./sb-app-customize"
+import Cookies from "js-cookie"
 
 interface SbChatProps {
   user: User | null
@@ -13,8 +14,6 @@ const SbChat: React.FC<SbChatProps> = ({ user }) => {
   const [isMounted, setIsMounted] = useState(false)
 
   useEffect(() => setIsMounted(true), [])
-
-  //   if (!isMounted ) return null
   if (!isMounted || !user) return null
 
   return (

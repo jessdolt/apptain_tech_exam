@@ -3,6 +3,7 @@ import prismadb from "@/lib/prismadb"
 import { generateNickName } from "@/utils/generateNickname"
 import { generateId } from "@/utils/generateUuid"
 import { api } from "./lib/axios"
+import Cookies from "js-cookie"
 
 const createUser = async () => {
   try {
@@ -13,7 +14,7 @@ const createUser = async () => {
       profile_url: "",
     })
 
-    const token = await api.post(`/users/${data.user_id}/token`, {})
+    const { data: token } = await api.post(`/users/${data.user_id}/token`, {})
 
     await prismadb.user.create({
       data: {
@@ -24,7 +25,7 @@ const createUser = async () => {
     })
 
     return {
-      accessToken: data.access_token,
+      accessToken: token.token,
       userId: data.user_id,
       nickname: data.nickname,
       profileUrl: data.profile_url,
