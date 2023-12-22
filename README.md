@@ -2,16 +2,22 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 
 ## Getting Started
 
-First, run the development server:
+First, add the .env file to the app root folder :
 
 ```bash
+npm install
+
+npx prisma generate
+
+# you can run the app by:
+
 npm run dev
+
 # or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+
+npm run build
+
+npm run start
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
