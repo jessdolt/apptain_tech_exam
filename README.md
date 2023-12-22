@@ -2,12 +2,14 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 
 ## Getting Started
 
-First, run the development server:
+First, add the .env file to the app root folder :
 
 ```bash
 npm install
 
 npx prisma generate
+
+# you can run the app by:
 
 npm run dev
 
