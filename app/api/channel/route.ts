@@ -13,8 +13,6 @@ export async function POST(request: Request) {
       },
     })
 
-    console.log(channel)
-
     return new Response(JSON.stringify(channel), {
       status: 201,
     })

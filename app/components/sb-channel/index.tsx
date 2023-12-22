@@ -7,7 +7,7 @@ import CreateChannel from "@sendbird/uikit-react/CreateChannel"
 import EditUserProfile from "@sendbird/uikit-react/EditUserProfile"
 import SbHeader from "./sb-header"
 
-const SbChannel = () => {
+const SbChannel = ({ setCurrentChannel }: any) => {
   const [openChannel, setOpenChannel] = useState(false)
   const [openUserProfile, setOpenUserProfile] = useState(false)
 
@@ -27,9 +27,10 @@ const SbChannel = () => {
     try {
       await axios.post("/api/channel", data)
     } catch (e) {
-      console.log(e)
+      console.error("Error creating channel:", e)
     }
   }
+
   const handleOnEditProfile = async (user: any) => {
     const { userId, plainProfileUrl, nickname } = user
 
@@ -42,7 +43,7 @@ const SbChannel = () => {
 
       setOpenUserProfile(false)
     } catch (e) {
-      console.log(e)
+      console.error("Error editing user profile:", e)
     }
   }
 
@@ -63,6 +64,7 @@ const SbChannel = () => {
       )}
 
       <ChannelList
+        onChannelSelect={(channel) => setCurrentChannel(channel)}
         renderHeader={() => {
           return (
             <SbHeader

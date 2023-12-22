@@ -12,19 +12,15 @@ const SbAppCustomize = () => {
 
   return (
     <div className="flex h-full">
-      <div>
-        <ChannelListProvider
-          onChannelSelect={(channel) => {
-            setCurrentChannel(channel)
-          }}
-        >
-          <SbChannel />
-        </ChannelListProvider>
-      </div>
+      <ChannelListProvider
+        onChannelSelect={(channel) => {
+          setCurrentChannel(channel)
+        }}
+      >
+        <SbChannel setCurrentChannel={setCurrentChannel} />
+      </ChannelListProvider>
 
-      <div className="flex-1">
-        <Channel channelUrl={currentChannelUrl} />
-      </div>
+      <Channel channelUrl={currentChannelUrl} />
     </div>
   )
 }

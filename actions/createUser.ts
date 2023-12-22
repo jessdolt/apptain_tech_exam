@@ -1,9 +1,10 @@
 import { User } from "@/app/interfaces"
+
 import prismadb from "@/lib/prismadb"
+import { api } from "./lib/axios"
+
 import { generateNickName } from "@/utils/generateNickname"
 import { generateId } from "@/utils/generateUuid"
-import { api } from "./lib/axios"
-import Cookies from "js-cookie"
 
 const createUser = async () => {
   try {
