@@ -7,8 +7,6 @@ First, add the .env file to the app root folder :
 ```bash
 npm install
 
-npx prisma generate
-
 # you can run the app by:
 
 npm run dev
